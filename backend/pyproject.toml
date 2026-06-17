@@ -1,0 +1,98 @@
+[build-system]
+requires = ["setuptools>=75.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "anomaly-detection"
+version = "0.1.0"
+description = "Network anomaly detection system using ML models on CICIDS2017 data"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.135.0",
+    "uvicorn[standard]>=0.34.0",
+    "pydantic>=2.10",
+    "pydantic-settings>=2.7",
+    "sqlalchemy[asyncio]>=2.0.36",
+    "asyncpg>=0.30.0",
+    "psycopg2-binary>=2.9.10",
+    "alembic>=1.14",
+    "pandas>=2.2",
+    "pyarrow>=18.0",
+    "numpy>=2.1",
+    "scikit-learn>=1.6",
+    "pyod>=2.0",
+    "torch>=2.0",
+    "tqdm>=4.0",
+    "river>=0.21",
+    "lightgbm>=4.5",
+    "joblib>=1.4",
+    "structlog>=24.4",
+    "matplotlib>=3.9",
+    "httpx>=0.28",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=6.0",
+    "ruff>=0.8",
+    "mypy>=1.13",
+    "types-psycopg2>=2.9",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "TCH",  # flake8-type-checking
+    "RUF",  # ruff-specific
+]
+ignore = [
+    "N803",  # Argument name should be lowercase (allow uppercase X/Y for ML convention)
+    "N806",  # Variable name should be lowercase (allow uppercase X/Y for ML convention)
+    "B904",  # Use raise from within except blocks (not critical for exception handlers here)
+    "E501",  # Line too long
+    "TC001", # Move application import into a type-checking block
+    "TC002", # Move third-party import into a type-checking block
+    "TC003", # Move standard library import into a type-checking block
+]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = [
+    "pyod.*",
+    "river.*",
+    "lightgbm.*",
+    "joblib.*",
+    "pandas.*",
+    "sklearn.*",
+    "matplotlib.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["../tests"]
+asyncio_mode = "auto"
+markers = [
+    "integration: marks tests as integration tests",
+]

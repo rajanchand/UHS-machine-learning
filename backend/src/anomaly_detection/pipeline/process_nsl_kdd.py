@@ -195,11 +195,10 @@ def process_dataset(raw_dir: Path, output_dir: Path) -> None:
         raise ValueError(f"Missing features after processing: {missing}")
 
     # Keep only features + label
-    train_df = train_enc[FEATURE_COLUMNS + ["label"]].copy()
-    test_df  = test_enc[FEATURE_COLUMNS + ["label"]].copy()
+    train_df = train_enc[[*FEATURE_COLUMNS, "label"]].copy()
+    test_df  = test_enc[[*FEATURE_COLUMNS, "label"]].copy()
 
     # Drop rows with NaN / Inf
-    import numpy as np
     for df in [train_df, test_df]:
         df.replace([np.inf, -np.inf], np.nan, inplace=True)
     train_df.dropna(inplace=True)

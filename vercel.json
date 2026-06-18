@@ -2,11 +2,13 @@
   "experimentalServices": {
     "frontend": {
       "entrypoint": "frontend",
-      "routePrefix": "/"
+      "routePrefix": "/",
+      "framework": null
     },
     "backend": {
       "entrypoint": "backend",
-      "routePrefix": "/api"
+      "routePrefix": "/api",
+      "framework": "fastapi"
     }
   }
 }

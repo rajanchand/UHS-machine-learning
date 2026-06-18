@@ -17,15 +17,12 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 # in some code paths).
 # ---------------------------------------------------------------------------
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
-os.environ.setdefault("MODEL_REGISTRY_PATH", str(_PROJECT_ROOT / "models"))
-os.environ.setdefault("DATA_DIR", str(_PROJECT_ROOT / "data"))
+os.environ["MODEL_REGISTRY_PATH"] = str(_PROJECT_ROOT / "models")
+os.environ["DATA_DIR"] = str(_PROJECT_ROOT / "data")
 # Use SQLite for tests instead of PostgreSQL
-os.environ.setdefault(
-    "DATABASE_URL",
-    "sqlite+aiosqlite:///:memory:",
-)
+os.environ["DATABASE_URL"] = "sqlite+aiosqlite:///:memory:"
 # Bypass rate limiter in tests
-os.environ.setdefault("LOGIN_RATE_LIMIT", "9999")
+os.environ["LOGIN_RATE_LIMIT"] = "9999"
 
 from anomaly_detection.app import create_app  # noqa: E402
 from anomaly_detection.db.models import Base  # noqa: E402

@@ -45,7 +45,7 @@ logger = get_logger(__name__)
 
 # Paths that don't require authentication
 _OPEN_PATHS = {
-    "/health", "/ready", "/api/v1/auth/login", "/api/v1/auth/register",
+    "/health", "/ready", "/api/health", "/api/ready", "/api/v1/auth/login", "/api/v1/auth/register",
     "/api/v1/auth/forgot-password", "/api/v1/auth/refresh",
     "/api/v1/seed",
 }
@@ -148,7 +148,7 @@ def create_app() -> FastAPI:
                 return await call_next(request)
 
             # Bypass for simulator routes with valid API key
-            is_simulator_route = path in ("/api/v1/flows/stream", "/api/v1/flows/batch", "/simulate")
+            is_simulator_route = path in ("/api/v1/flows/stream", "/api/v1/flows/batch", "/simulate", "/api/simulate")
             has_api_key = request.headers.get("X-API-Key") == settings.simulator_api_key
             if is_simulator_route and has_api_key:
                 return await call_next(request)
@@ -181,10 +181,12 @@ def create_app() -> FastAPI:
 
     # Health check
     @app.get("/health", tags=["system"])
+    @app.get("/api/health", tags=["system"])
     async def health_check() -> dict:
         return {"status": "ok"}
 
     @app.get("/ready", tags=["system"])
+    @app.get("/api/ready", tags=["system"])
     async def readiness_check() -> dict:
         try:
             async with app.state.session_factory() as session:
@@ -195,6 +197,7 @@ def create_app() -> FastAPI:
 
     # Simulator scenario endpoints
     @app.post("/simulate", include_in_schema=False)
+    @app.post("/api/simulate", include_in_schema=False)
     async def set_simulate_scenario(payload: dict) -> dict:
         scenario = payload.get("scenario")
         if scenario not in ["port_scan", "ddos", "brute_force", None, ""]:
@@ -203,6 +206,7 @@ def create_app() -> FastAPI:
         return {"active_scenario": app.state.active_scenario}
 
     @app.get("/simulate", include_in_schema=False)
+    @app.get("/api/simulate", include_in_schema=False)
     async def get_simulate_scenario() -> dict:
         return {"active_scenario": getattr(app.state, "active_scenario", None)}
 

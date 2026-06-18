@@ -101,7 +101,7 @@ class AutoEncoderDetector(AnomalyDetector):
         score_range = self._train_score_max - self._train_score_min
         if score_range > 0:
             normalised = (raw_scores - self._train_score_min) / score_range
-            return np.clip(normalised, 0.0, 1.0)  # type: ignore[no-any-return]
+            return np.clip(normalised, 0.0, 1.0)
         return np.zeros_like(raw_scores)
 
     def save(self, path: Path) -> None:

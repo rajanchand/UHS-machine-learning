@@ -42,7 +42,7 @@ def _require_auth(request: Request) -> str:
     user = request.session.get("user")
     if not user:
         raise HTTPException(status_code=401, detail="Not authenticated")
-    return user
+    return cast(str, user)
 
 
 @router.get("", response_model=list[AlertResponse])

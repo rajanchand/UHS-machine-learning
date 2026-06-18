@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
@@ -40,8 +40,8 @@ def create_engine(settings: Settings) -> AsyncEngine:
 
     if "sqlite" in settings.database_url:
         @event.listens_for(engine.sync_engine, "connect")
-        def register_sqlite_functions(dbapi_connection, connection_record):
-            def date_trunc(field, dt_str):
+        def register_sqlite_functions(dbapi_connection: Any, connection_record: Any) -> None:
+            def date_trunc(field: Any, dt_str: Any) -> Any:
                 if not dt_str:
                     return dt_str
                 # Truncate to minute 'YYYY-MM-DD HH:MM:00'

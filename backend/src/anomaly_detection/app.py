@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from contextlib import asynccontextmanager
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pandas as pd
@@ -12,7 +12,7 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 from sqlalchemy import func, select, text
-from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.middleware.sessions import SessionMiddleware
 
 from anomaly_detection.config import get_settings
@@ -62,7 +62,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
             existing = result.scalar_one_or_none()
 
             if not existing:
-                metrics: dict = {}
+                metrics: dict[str, Any] = {}
                 metrics_path = settings.data_dir.parent / "evaluation" / "metrics.json"
                 if metrics_path.exists():
                     try:
@@ -145,7 +145,7 @@ def create_app() -> FastAPI:
     )
 
     class AuthGatingMiddleware(BaseHTTPMiddleware):
-        async def dispatch(self, request: Request, call_next):
+        async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
             path = request.url.path
 
             if (
@@ -194,7 +194,7 @@ def create_app() -> FastAPI:
     app.state.active_scenario = None
 
     @app.post("/simulate")
-    async def set_simulate_scenario(payload: dict) -> dict:
+    async def set_simulate_scenario(payload: dict[str, Any]) -> dict[str, Any]:
         scenario = payload.get("scenario")
         if scenario not in ("port_scan", "ddos", "brute_force", None, ""):
             raise HTTPException(status_code=400, detail="Invalid scenario")
@@ -202,7 +202,7 @@ def create_app() -> FastAPI:
         return {"active_scenario": app.state.active_scenario}
 
     @app.get("/simulate")
-    async def get_simulate_scenario() -> dict:
+    async def get_simulate_scenario() -> dict[str, Any]:
         return {"active_scenario": getattr(app.state, "active_scenario", None)}
 
     @app.get("/health", response_model=HealthResponse, tags=["system"])

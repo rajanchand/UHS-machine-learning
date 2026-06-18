@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from typing import TYPE_CHECKING, cast
+from typing import Any, TYPE_CHECKING, cast
 
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
@@ -222,7 +222,7 @@ async def get_timeline(request: Request) -> TimelineResponse:
 
 
 @models_router.get("/comparison")
-async def get_model_comparison(request: Request) -> list[dict]:
+async def get_model_comparison(request: Request) -> list[dict[str, Any]]:
     """Return evaluation metrics for all models side by side."""
     settings = request.app.state.settings
     metrics_path = settings.data_dir.parent / "evaluation" / "metrics.json"
@@ -234,7 +234,7 @@ async def get_model_comparison(request: Request) -> list[dict]:
         )
 
     try:
-        all_metrics: dict = json.loads(metrics_path.read_text())
+        all_metrics: dict[str, Any] = json.loads(metrics_path.read_text())
     except Exception as exc:
         raise HTTPException(status_code=500, detail="Failed to read metrics file") from exc
 

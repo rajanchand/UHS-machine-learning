@@ -9,7 +9,7 @@ from __future__ import annotations
 import pandas as pd
 
 from anomaly_detection.logging import get_logger
-from anomaly_detection.schemas.flows import FEATURE_COLUMNS
+from anomaly_detection.constants import FEATURE_COLUMNS
 
 logger = get_logger(__name__)
 

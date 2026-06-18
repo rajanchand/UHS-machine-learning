@@ -1,0 +1,19 @@
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+plugins = ["pydantic.mypy"]
+mypy_path = "backend/src"
+
+[[tool.mypy.overrides]]
+module = [
+    "pyod.*",
+    "river.*",
+    "lightgbm.*",
+    "joblib.*",
+    "pandas.*",
+    "sklearn.*",
+    "matplotlib.*",
+]
+ignore_missing_imports = true

@@ -23,7 +23,7 @@ from anomaly_detection.ml.isolation_forest import IsolationForestDetector
 from anomaly_detection.ml.lightgbm_model import LightGBMBenchmark
 from anomaly_detection.ml.random_forest import RandomForestDetector
 from anomaly_detection.ml.xgboost_model import XGBoostDetector
-from anomaly_detection.schemas.flows import FEATURE_COLUMNS
+from anomaly_detection.constants import FEATURE_COLUMNS
 
 logger = get_logger(__name__)
 

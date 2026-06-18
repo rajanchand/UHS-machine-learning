@@ -23,9 +23,9 @@ async def test_feedback_loop_and_csv_export(app_client, session_factory):
             dst_ip="10.0.0.1",
             dst_port=80,
             protocol=6,
-            flow_duration=123.45,
-            total_fwd_packets=10,
-            total_bwd_packets=5,
+            duration=123.45,
+            src_bytes=1000.0,
+            dst_bytes=5000.0,
             label="BENIGN",
         )
         alert = Alert(
@@ -90,7 +90,7 @@ async def test_feedback_loop_and_csv_export(app_client, session_factory):
     assert "alert_id" in headers
     assert "verdict" in headers
     assert "corrected_label" in headers
-    assert "flow_duration" in headers
+    assert "duration" in headers
 
     row_values = lines[1].split(",")
     assert str(alert_uuid) in row_values

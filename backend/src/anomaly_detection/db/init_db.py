@@ -5,7 +5,7 @@ from anomaly_detection.db.engine import create_engine
 from anomaly_detection.db.models import Base
 
 
-async def init_db():
+async def init_db() -> None:
     from sqlalchemy import select
     from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 

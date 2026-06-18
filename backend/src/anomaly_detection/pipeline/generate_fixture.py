@@ -11,6 +11,7 @@ from __future__ import annotations
 import csv
 import random
 from pathlib import Path
+from typing import Any
 
 random.seed(42)
 
@@ -79,24 +80,24 @@ NSL_COLUMNS = [
 
 
 def _row(
-    duration,
-    protocol,
-    service,
-    flag,
-    src_b,
-    dst_b,
-    logged_in,
-    count,
-    srv_count,
-    serr,
-    rerr,
-    same_srv,
-    diff_srv,
-    dst_cnt,
-    dst_srv_cnt,
-    dst_same_srv,
-    label,
-):
+    duration: int,
+    protocol: str,
+    service: str,
+    flag: str,
+    src_b: int,
+    dst_b: int,
+    logged_in: int,
+    count: int,
+    srv_count: int,
+    serr: float,
+    rerr: float,
+    same_srv: float,
+    diff_srv: float,
+    dst_cnt: int,
+    dst_srv_cnt: int,
+    dst_same_srv: float,
+    label: str,
+) -> dict[str, Any]:
     return {
         "duration": duration,
         "protocol_type": PROTOCOL_MAP.get(protocol, 1.0),
@@ -143,7 +144,7 @@ def _row(
     }
 
 
-def benign():
+def benign() -> dict[str, Any]:
     dur = random.randint(0, 200)
     return _row(
         duration=dur,
@@ -166,7 +167,7 @@ def benign():
     )
 
 
-def dos():
+def dos() -> dict[str, Any]:
     return _row(
         duration=random.randint(0, 5),
         protocol="tcp",
@@ -188,7 +189,7 @@ def dos():
     )
 
 
-def probe():
+def probe() -> dict[str, Any]:
     services = list(SERVICE_MAP.keys())
     return _row(
         duration=random.randint(0, 2),
@@ -211,7 +212,7 @@ def probe():
     )
 
 
-def r2l():
+def r2l() -> dict[str, Any]:
     return _row(
         duration=random.randint(1, 100),
         protocol="tcp",
@@ -233,7 +234,7 @@ def r2l():
     )
 
 
-def u2r():
+def u2r() -> dict[str, Any]:
     row = _row(
         duration=random.randint(0, 10),
         protocol="tcp",

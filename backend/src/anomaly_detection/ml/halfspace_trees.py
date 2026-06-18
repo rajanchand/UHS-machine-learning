@@ -16,7 +16,7 @@ from river import anomaly, compose, preprocessing
 
 from anomaly_detection.logging import get_logger
 from anomaly_detection.ml.base import AnomalyDetector
-from anomaly_detection.schemas.flows import FEATURE_COLUMNS
+from anomaly_detection.constants import FEATURE_COLUMNS
 
 if TYPE_CHECKING:
     from pathlib import Path

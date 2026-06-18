@@ -22,6 +22,30 @@ def unauthenticated_app(session_factory, db_engine):
         data_dir=settings.data_dir,
     )
     inference_service.load_models()
+
+    # If no models were loaded (e.g. in CI due to gitignored folders), seed with dummy models for testing
+    if not inference_service.available_models:
+        import numpy as np
+
+        class DummyDetector:
+            def __init__(self, name: str) -> None:
+                self.name = name
+
+            def score(self, X: np.ndarray) -> np.ndarray:
+                return np.zeros(X.shape[0])
+
+        for model_name in [
+            "isolation_forest",
+            "autoencoder",
+            "halfspace_trees",
+            "lightgbm_benchmark",
+            "random_forest",
+            "xgboost",
+        ]:
+            inference_service._models[model_name] = DummyDetector(model_name)  # type: ignore[assignment]
+            inference_service._thresholds[model_name] = 0.5
+        inference_service._active_model = "isolation_forest"
+
     app.state.inference_service = inference_service
     app.state.settings = settings
     app.state.metrics_inference_count = 0
@@ -33,8 +57,7 @@ def unauthenticated_app(session_factory, db_engine):
 async def test_auth_gating_unauthenticated(unauthenticated_app):
     """Verify that gated routes return 401 when request is unauthenticated."""
     async with AsyncClient(
-        transport=ASGITransport(app=unauthenticated_app),
-        base_url="http://testserver"
+        transport=ASGITransport(app=unauthenticated_app), base_url="http://testserver"
     ) as client:
         # A gated endpoint
         response = await client.get("/api/v1/alerts")
@@ -46,8 +69,7 @@ async def test_auth_gating_unauthenticated(unauthenticated_app):
 async def test_auth_gating_open_endpoints(unauthenticated_app):
     """Verify that open endpoints do not require authentication."""
     async with AsyncClient(
-        transport=ASGITransport(app=unauthenticated_app),
-        base_url="http://testserver"
+        transport=ASGITransport(app=unauthenticated_app), base_url="http://testserver"
     ) as client:
         # Open endpoints
         res_health = await client.get("/health")
@@ -65,20 +87,15 @@ async def test_auth_gating_simulator_bypass(unauthenticated_app):
     """Verify that simulator routes bypass auth with correct headers or host."""
     # Use remote IP address (8.8.8.8) to simulate non-localhost client
     transport = ASGITransport(app=unauthenticated_app, client=("8.8.8.8", 1234))
-    
-    async with AsyncClient(
-        transport=transport,
-        base_url="http://testserver"
-    ) as client:
+
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
         # Gated simulation endpoints without header or localhost -> 401
         res_no_key = await client.post("/api/v1/flows/stream", json={})
         assert res_no_key.status_code == 401
 
         # Bypass using X-API-Key simulator-secret
         res_with_key = await client.post(
-            "/api/v1/flows/stream",
-            json={},
-            headers={"X-API-Key": "simulator-secret"}
+            "/api/v1/flows/stream", json={}, headers={"X-API-Key": "simulator-secret"}
         )
         # Bypasses auth: returns 422 because of empty request body validation rather than 401
         assert res_with_key.status_code == 422
@@ -90,15 +107,13 @@ async def test_auth_lifecycle(unauthenticated_app, session_factory):
     # Seed a test user in DB
     async with session_factory() as session:
         user = User(
-            username="analyst_bob",
-            password_hash=hash_password("bob_secure_pwd")
+            username="analyst_bob", password_hash=hash_password("bob_secure_pwd")
         )
         session.add(user)
         await session.commit()
 
     async with AsyncClient(
-        transport=ASGITransport(app=unauthenticated_app),
-        base_url="http://testserver"
+        transport=ASGITransport(app=unauthenticated_app), base_url="http://testserver"
     ) as client:
         # Me check initially -> 401
         res_me_init = await client.get("/api/v1/auth/me")
@@ -107,14 +122,14 @@ async def test_auth_lifecycle(unauthenticated_app, session_factory):
         # Invalid login -> 401
         res_login_bad = await client.post(
             "/api/v1/auth/login",
-            json={"username": "analyst_bob", "password": "wrong_password"}
+            json={"username": "analyst_bob", "password": "wrong_password"},
         )
         assert res_login_bad.status_code == 401
 
         # Valid login -> 200
         res_login_good = await client.post(
             "/api/v1/auth/login",
-            json={"username": "analyst_bob", "password": "bob_secure_pwd"}
+            json={"username": "analyst_bob", "password": "bob_secure_pwd"},
         )
         assert res_login_good.status_code == 200
         data = res_login_good.json()

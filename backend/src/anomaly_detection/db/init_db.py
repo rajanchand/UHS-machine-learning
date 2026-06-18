@@ -1,11 +1,14 @@
 import asyncio
+
 from anomaly_detection.config import get_settings
 from anomaly_detection.db.engine import create_engine
 from anomaly_detection.db.models import Base
 
+
 async def init_db():
     from sqlalchemy import select
-    from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
+    from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+
     from anomaly_detection.db.models import User
     from anomaly_detection.utils.auth import hash_password
 

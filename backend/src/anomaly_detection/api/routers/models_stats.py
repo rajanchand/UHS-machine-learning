@@ -6,6 +6,7 @@ import json
 from typing import TYPE_CHECKING, cast
 
 from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel
 from sqlalchemy import desc, func, select
 
 from anomaly_detection.db.models import Alert, AlertStatus, Flow, Prediction
@@ -65,8 +66,9 @@ async def update_threshold(
     inference_svc.set_threshold(model_name, update.threshold)
 
     # Also persist to DB so the threshold survives restarts
-    from anomaly_detection.db.models import MLModel
     from sqlalchemy import update as sql_update
+
+    from anomaly_detection.db.models import MLModel
     async with _get_session(request) as session:
         await session.execute(
             sql_update(MLModel)
@@ -78,7 +80,7 @@ async def update_threshold(
     return {"model_name": model_name, "threshold": update.threshold}
 
 
-from pydantic import BaseModel
+
 
 class ActiveModelUpdate(BaseModel):
     """Request schema for setting active model."""
@@ -104,8 +106,9 @@ async def set_active_model(
     inference_svc.set_active_model(update.name)
 
     # Also update in database
-    from anomaly_detection.db.models import MLModel
     from sqlalchemy import update as sql_update
+
+    from anomaly_detection.db.models import MLModel
     async with _get_session(request) as session:
         # Deactivate all models
         await session.execute(

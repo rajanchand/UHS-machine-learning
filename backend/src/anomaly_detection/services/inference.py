@@ -18,6 +18,7 @@ from anomaly_detection.ml.xgboost_model import XGBoostDetector
 
 if TYPE_CHECKING:
     from pathlib import Path
+
     from anomaly_detection.ml.base import AnomalyDetector
 
 logger = get_logger(__name__)

@@ -20,6 +20,7 @@ from anomaly_detection.services.inference import InferenceService
 if TYPE_CHECKING:
     import uuid
     from collections.abc import AsyncGenerator
+
     from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = get_logger(__name__)

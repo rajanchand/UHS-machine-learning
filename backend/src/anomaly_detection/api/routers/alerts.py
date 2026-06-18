@@ -5,8 +5,8 @@ from __future__ import annotations
 import csv
 import io
 import uuid
-from datetime import datetime, timezone
-from enum import Enum
+from datetime import UTC, datetime
+from enum import StrEnum
 from typing import TYPE_CHECKING, cast
 
 from fastapi import APIRouter, HTTPException, Query, Request
@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 router = APIRouter(prefix="/api/v1/alerts", tags=["alerts"])
 
 
-class VerdictEnum(str, Enum):
+class VerdictEnum(StrEnum):
     TRUE_POSITIVE = "true_positive"
     FALSE_POSITIVE = "false_positive"
 
@@ -233,7 +233,7 @@ async def submit_alert_feedback(
         if feedback:
             feedback.verdict = payload.verdict.value
             feedback.user = username
-            feedback.created_at = datetime.now(timezone.utc)
+            feedback.created_at = datetime.now(UTC)
         else:
             session.add(Feedback(
                 alert_id=alert_uuid,

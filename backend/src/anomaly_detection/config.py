@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import json
 from pathlib import Path
 from typing import Any, Literal
@@ -75,12 +76,10 @@ class Settings(BaseSettings):
         return [str(v)]
 
     @model_validator(mode="after")
-    def ensure_directories_exist(self) -> "Settings":
+    def ensure_directories_exist(self) -> Settings:
         for path in (self.model_registry_path, self.data_dir):
-            try:
+            with contextlib.suppress(OSError, PermissionError):
                 path.mkdir(parents=True, exist_ok=True)
-            except (OSError, PermissionError):
-                pass
         return self
 
 

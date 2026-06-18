@@ -41,7 +41,7 @@ def calculate_feature_psi(expected_values: pd.Series, actual_values: list[float]
         return 0.0
 
     actual_arr = np.array(actual_values)
-    
+
     # Calculate quantiles of training data
     percentiles = np.linspace(0, 100, num_bins + 1)[1:-1]
     bins = np.percentile(expected_values, percentiles)
@@ -77,7 +77,7 @@ def calculate_feature_psi(expected_values: pd.Series, actual_values: list[float]
 async def get_drift(request: Request) -> DriftResponse:
     """Calculate population stability index (drift) comparing recent flows to training data."""
     settings = request.app.state.settings
-    
+
     # 1. Fetch training baseline
     train_parquet_path = Path(settings.data_dir) / "processed" / "train.parquet"
     if not train_parquet_path.exists():
@@ -85,7 +85,7 @@ async def get_drift(request: Request) -> DriftResponse:
             status_code=500,
             detail="Training baseline dataset (train.parquet) not found.",
         )
-    
+
     try:
         train_df = pd.read_parquet(train_parquet_path)
     except Exception as e:

@@ -122,7 +122,7 @@ class AutoEncoderDetector(AnomalyDetector):
         logger.info("model_saved", model=self.name, path=str(path))
 
     @classmethod
-    def load(cls, path: Path) -> "AutoEncoderDetector":
+    def load(cls, path: Path) -> AutoEncoderDetector:
         """Load model from disk."""
         import json
         instance = cls()

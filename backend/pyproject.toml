@@ -30,6 +30,7 @@ dependencies = [
     "structlog>=24.4",
     "matplotlib>=3.9",
     "httpx>=0.28",
+    "itsdangerous>=2.2.0",
 ]
 
 [project.optional-dependencies]

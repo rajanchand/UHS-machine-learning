@@ -81,6 +81,16 @@ class Settings(BaseSettings):
     smtp_password: str | None = None
     smtp_from: str = "noreply@anomalyguard.local"
 
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def validate_database_url(cls, v: Any) -> str:
+        if isinstance(v, str):
+            if v.startswith("postgres://"):
+                v = v.replace("postgres://", "postgresql+asyncpg://", 1)
+            elif v.startswith("postgresql://"):
+                v = v.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return str(v)
+
     @field_validator("cors_origins", mode="before")
     @classmethod
     def parse_cors_origins(cls, v: Any) -> list[str]:

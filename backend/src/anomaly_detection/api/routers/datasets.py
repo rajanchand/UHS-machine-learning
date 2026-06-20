@@ -6,7 +6,6 @@ import os
 import uuid
 from typing import Any
 
-import pandas as pd
 from fastapi import APIRouter, File, Request, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 from sqlalchemy import select
@@ -42,6 +41,7 @@ async def upload_dataset(
 
     # Analyze dataset
     try:
+        import pandas as pd
         df = pd.read_csv(file_path)
         row_count = len(df)
         column_count = len(df.columns)
@@ -113,6 +113,7 @@ async def get_dataset(request: Request, dataset_id: str) -> Response | dict[str,
         # Get preview (first 10 rows)
         preview = []
         try:
+            import pandas as pd
             df = pd.read_csv(dataset.file_path, nrows=10)
             preview = df.to_dict(orient="records")
         except Exception:

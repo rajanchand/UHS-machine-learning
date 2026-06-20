@@ -26,21 +26,8 @@ dependencies = [
     "bcrypt>=4.2.0",
 
     # Data processing
-    "pandas>=2.2",
-    "pyarrow>=18.0",
     "numpy>=2.1",
-
-    # Machine Learning
-    "scikit-learn>=1.6",
-    "xgboost>=2.0",
     "joblib>=1.4",
-
-    # Packet capture
-    "scapy>=2.6.0",
-
-    # Report generation
-    "reportlab>=4.2",
-    "openpyxl>=3.1",
 
     # Logging & utilities
     "structlog>=24.4",
@@ -50,6 +37,15 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+ml = [
+    "pandas>=2.2",
+    "pyarrow>=18.0",
+    "scikit-learn>=1.6",
+    "xgboost>=2.0",
+    "scapy>=2.6.0",
+    "reportlab>=4.2",
+    "openpyxl>=3.1",
+]
 dev = [
     "pytest>=8.3",
     "pytest-asyncio>=0.24",

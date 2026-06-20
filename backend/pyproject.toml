@@ -94,9 +94,7 @@ module = [
     "pandas.*",
     "sklearn.*",
     "xgboost.*",
-    "scapy.*",
-    "reportlab.*",
-    "openpyxl.*",
+    "matplotlib.*",
     "psutil.*",
 ]
 ignore_missing_imports = true

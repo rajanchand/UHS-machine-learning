@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import joblib
 import numpy as np
@@ -15,9 +15,9 @@ except ImportError:
     HAS_XGBOOST = False
     class MockXGB:
         class XGBClassifier:
-            def __init__(self, *args, **kwargs):
+            def __init__(self, *args: Any, **kwargs: Any) -> None:
                 pass
-            def fit(self, *args, **kwargs):
+            def fit(self, *args: Any, **kwargs: Any) -> None:
                 pass
     xgb = MockXGB()  # type: ignore[assignment]
 

@@ -6,7 +6,7 @@ Uses average path length as the anomaly score.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import joblib
 import numpy as np
@@ -17,9 +17,9 @@ try:
 except ImportError:
     HAS_SKLEARN = False
     class IsolationForest:  # type: ignore[no-redef]
-        def __init__(self, *args, **kwargs):
+        def __init__(self, *args: Any, **kwargs: Any) -> None:
             pass
-        def fit(self, *args, **kwargs):
+        def fit(self, *args: Any, **kwargs: Any) -> None:
             pass
 
 from anomaly_detection.logging import get_logger

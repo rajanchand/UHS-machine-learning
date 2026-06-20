@@ -87,15 +87,19 @@ python_version = "3.12"
 strict = true
 warn_return_any = true
 warn_unused_configs = true
+warn_unused_ignores = false
 
 [[tool.mypy.overrides]]
 module = [
-    "joblib.*",
-    "pandas.*",
+    "joblib",
+    "pandas",
+    "sklearn",
     "sklearn.*",
+    "xgboost",
     "xgboost.*",
+    "matplotlib",
     "matplotlib.*",
-    "psutil.*",
+    "psutil",
 ]
 ignore_missing_imports = true
 

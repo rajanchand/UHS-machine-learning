@@ -2,19 +2,20 @@
 python_version = "3.12"
 strict = true
 warn_return_any = true
-warn_unused_configs = true
+warn_unused_ignores = false
 plugins = ["pydantic.mypy"]
 mypy_path = "backend/src"
 
 [[tool.mypy.overrides]]
 module = [
-    "joblib.*",
-    "pandas.*",
+    "joblib",
+    "pandas",
+    "sklearn",
     "sklearn.*",
+    "xgboost",
+    "xgboost.*",
+    "matplotlib",
     "matplotlib.*",
-    "psutil.*",
-    "scapy.*",
-    "reportlab.*",
-    "openpyxl.*",
+    "psutil",
 ]
 ignore_missing_imports = true

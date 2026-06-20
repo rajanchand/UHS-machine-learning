@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import contextlib
 import json
+import os
 from pathlib import Path
 from typing import Any, Literal
 
@@ -23,10 +24,14 @@ class Settings(BaseSettings):
 
     # Database
     database_url: str = (
-        "postgresql+asyncpg://anomaly:changeme_in_production@localhost:5432/anomaly_detection"
+        "sqlite+aiosqlite:////tmp/anomaly_detection.db"
+        if os.environ.get("VERCEL") == "1"
+        else "postgresql+asyncpg://anomaly:changeme_in_production@localhost:5432/anomaly_detection"
     )
     database_url_sync: str = (
-        "postgresql+psycopg2://anomaly:changeme_in_production@localhost:5432/anomaly_detection"
+        "sqlite:////tmp/anomaly_detection.db"
+        if os.environ.get("VERCEL") == "1"
+        else "postgresql+psycopg2://anomaly:changeme_in_production@localhost:5432/anomaly_detection"
     )
     db_pool_size: int = 10
     db_max_overflow: int = 20
@@ -62,8 +67,12 @@ class Settings(BaseSettings):
     # File paths
     model_registry_path: Path = Path("models")
     data_dir: Path = Path("data")
-    upload_dir: Path = Path("uploads")
-    reports_dir: Path = Path("reports")
+    upload_dir: Path = (
+        Path("/tmp/uploads") if os.environ.get("VERCEL") == "1" else Path("uploads")
+    )
+    reports_dir: Path = (
+        Path("/tmp/reports") if os.environ.get("VERCEL") == "1" else Path("reports")
+    )
     frontend_dir: Path = Path("frontend")
 
     # ML defaults

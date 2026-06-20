@@ -7,8 +7,8 @@ from typing import Any
 
 from fastapi import APIRouter, Query, Request
 from fastapi.responses import JSONResponse
-from starlette.responses import Response
 from sqlalchemy import func, select
+from starlette.responses import Response
 
 from anomaly_detection.authentication import hash_password
 from anomaly_detection.db.models import User, UserRole, UserStatus

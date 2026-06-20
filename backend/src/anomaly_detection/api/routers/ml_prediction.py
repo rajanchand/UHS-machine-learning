@@ -2,15 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 import random
 from datetime import UTC, datetime
+from typing import Any
 
 from fastapi import APIRouter, Query, Request
 from fastapi.responses import JSONResponse
-from starlette.responses import Response
 from sqlalchemy import func, select
+from starlette.responses import Response
 
 from anomaly_detection.db.models import MLModel, ModelStatus, Prediction
 from anomaly_detection.schemas.common import (

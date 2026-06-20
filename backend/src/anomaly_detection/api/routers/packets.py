@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 import csv
 import io
 import random
 from datetime import UTC, datetime
+from typing import Any
 
 from fastapi import APIRouter, Query, Request
 from fastapi.responses import StreamingResponse

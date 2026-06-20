@@ -2,13 +2,12 @@
 
 from __future__ import annotations
 
-from collections.abc import AsyncGenerator
-from typing import Any
-
 import asyncio
 import json
 import random
+from collections.abc import AsyncGenerator
 from datetime import UTC, datetime
+from typing import Any
 
 from fastapi import APIRouter, Request
 from fastapi.responses import StreamingResponse

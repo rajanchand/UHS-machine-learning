@@ -6,8 +6,8 @@ from typing import Any
 
 from fastapi import APIRouter, Query, Request
 from fastapi.responses import JSONResponse
-from starlette.responses import Response
 from sqlalchemy import func, select
+from starlette.responses import Response
 
 from anomaly_detection.db.models import AlertSeverity, Attack, BlockedIP
 from anomaly_detection.schemas.common import AttackResponse, BlockIPRequest

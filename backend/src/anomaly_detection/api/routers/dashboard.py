@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 from datetime import UTC, datetime, timedelta
+from typing import Any
 
 import psutil
 from fastapi import APIRouter, Request

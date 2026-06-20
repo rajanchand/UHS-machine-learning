@@ -2,16 +2,15 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 import os
 import uuid
+from typing import Any
 
 import pandas as pd
 from fastapi import APIRouter, File, Request, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
-from starlette.responses import Response
 from sqlalchemy import select
+from starlette.responses import Response
 
 from anomaly_detection.db.models import Dataset
 from anomaly_detection.schemas.common import DatasetResponse

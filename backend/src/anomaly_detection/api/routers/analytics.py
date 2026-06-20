@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 from datetime import UTC, datetime, timedelta
+from typing import Any
 
 from fastapi import APIRouter, Request
 from sqlalchemy import func, select
@@ -226,15 +225,19 @@ async def model_metrics(request: Request) -> list[dict[str, Any]]:
 @router.get("/confusion-matrix/{model_name}")
 async def confusion_matrix(request: Request, model_name: str) -> dict[str, Any]:
     """Get confusion matrix data for a model."""
-    # Demo data
+    session_factory = request.app.state.session_factory
+
+    async with session_factory() as session:
+        result = await session.execute(
+            select(MLModel).where(MLModel.name == model_name)
+        )
+        model = result.scalar_one_or_none()
+
+    stored = (model.confusion_matrix if model and model.confusion_matrix else None)
+    default = {"true_positive": 0, "false_positive": 0, "true_negative": 0, "false_negative": 0}
     return {
         "model_name": model_name,
-        "matrix": {
-            "true_positive": random.randint(800, 1200),
-            "false_positive": random.randint(10, 50),
-            "true_negative": random.randint(3000, 5000),
-            "false_negative": random.randint(20, 80),
-        },
+        "matrix": stored or default,
         "labels": ["Normal", "Anomaly"],
     }
 

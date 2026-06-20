@@ -6,6 +6,7 @@ from collections.abc import AsyncGenerator
 from typing import Any
 
 import asyncio
+import json
 import random
 from datetime import UTC, datetime
 
@@ -129,8 +130,6 @@ async def monitoring_feed(request: Request) -> StreamingResponse:
                 )[0],
             }
             _monitoring_state["incoming_bytes"] = int(_monitoring_state["incoming_bytes"]) + packet["size"]
-
-            import json
 
             yield f"data: {json.dumps(packet)}\n\n"
             await asyncio.sleep(random.uniform(0.1, 0.5))

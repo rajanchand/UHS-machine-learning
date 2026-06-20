@@ -97,9 +97,6 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
             await session.commit()
             logger.info("default_users_seeded")
 
-    # Initialize Inference Service
-    from pathlib import Path
-
     from anomaly_detection.services.inference import InferenceService
 
     inference_service = InferenceService(

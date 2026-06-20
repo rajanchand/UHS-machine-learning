@@ -71,7 +71,7 @@ class NotificationService:
         try:
             async with httpx.AsyncClient(timeout=5.0) as client:
                 response = await client.post(self.webhook_url, json=payload)
-                if response.status_code == 200 or response.status_code == 201:
+                if response.status_code in (200, 201):
                     logger.info("alert_webhook_delivered", alert_id=str(alert_id))
                 else:
                     logger.warning(

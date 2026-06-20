@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import random
 import time
 import uuid
 from datetime import datetime
@@ -258,9 +259,6 @@ async def stream_inference(
         except Exception as exc:
             logger.error("inference_error", error=str(exc))
             score, is_anomaly, model_name, threshold = 0.0, False, "error", 0.5
-
-        # Ground truth override fallback for simulation consistency
-        import random
 
         if flow_create.label and flow_create.label.upper() not in ("BENIGN", "NORMAL", "UNKNOWN"):
             is_anomaly = True

@@ -9,13 +9,6 @@ from uuid import UUID
 from pydantic import BaseModel, Field
 
 
-# =============================================================================
-# Health / System
-# =============================================================================
-class HealthResponse(BaseModel):
-    status: str = "ok"
-    timestamp: datetime = Field(default_factory=datetime.now)
-
 
 # =============================================================================
 # Authentication
@@ -342,48 +335,4 @@ class SettingUpdateRequest(BaseModel):
     settings: dict[str, str]
 
 
-# =============================================================================
-# Analytics
-# =============================================================================
-class TrafficTrend(BaseModel):
-    timestamp: str
-    count: int
 
-
-class AttackTrend(BaseModel):
-    timestamp: str
-    count: int
-
-
-class ProtocolUsage(BaseModel):
-    protocol: str
-    count: int
-
-
-class TopAttacker(BaseModel):
-    ip_address: str
-    attack_count: int
-
-
-class TopPort(BaseModel):
-    port: int
-    count: int
-
-
-class ModelMetrics(BaseModel):
-    name: str
-    accuracy: float
-    precision_score: float
-    recall: float
-    f1_score: float
-
-
-# =============================================================================
-# Paginated Response
-# =============================================================================
-class PaginatedResponse(BaseModel):
-    items: list[Any]
-    total: int
-    page: int
-    per_page: int
-    total_pages: int

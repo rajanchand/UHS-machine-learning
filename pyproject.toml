@@ -12,5 +12,9 @@ module = [
     "pandas.*",
     "sklearn.*",
     "matplotlib.*",
+    "psutil.*",
+    "scapy.*",
+    "reportlab.*",
+    "openpyxl.*",
 ]
 ignore_missing_imports = true

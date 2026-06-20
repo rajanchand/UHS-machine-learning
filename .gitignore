@@ -60,3 +60,5 @@ anomaly_detection.db
 backend/data/
 backend/uv.lock
 simulator/.env
+cookie.txt
+backend/.env

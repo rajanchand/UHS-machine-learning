@@ -104,25 +104,5 @@ class FlowResponse(BaseModel):
     byte_rate: float
 
 
-class FlowDetailResponse(FlowResponse):
-    model_config = ConfigDict(from_attributes=True)
-
-    protocol_type: float
-    service: float
-    flag: float
-    logged_in: float
-    num_failed_logins: float
-    root_shell: float
-    serror_rate: float
-    rerror_rate: float
-    same_srv_rate: float
-    diff_srv_rate: float
-    dst_host_count: float
-    dst_host_srv_count: float
-    packet_rate: float
-    avg_packet_size: float
-    fwd_bwd_ratio: float
-
-
 class BatchFlowRequest(BaseModel):
     flows: list[FlowCreate] = Field(min_length=1, max_length=1000)

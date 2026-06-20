@@ -26,7 +26,12 @@ async def init_db() -> None:
         existing_user = result.scalar_one_or_none()
         if not existing_user:
             print("Seeding analyst user...")
-            analyst = User(username="analyst", password_hash=hash_password("password123"))
+            analyst = User(
+                username="analyst",
+                email="analyst@anomalyguard.local",
+                password_hash=hash_password("password123"),
+                full_name="Security Analyst",
+            )
             session.add(analyst)
             await session.commit()
             print("Analyst user seeded successfully!")

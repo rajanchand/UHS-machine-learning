@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import Any
 
-import random
 from datetime import UTC, datetime, timedelta
 
 from fastapi import APIRouter, Request
@@ -38,7 +37,7 @@ async def traffic_trends(request: Request) -> list[dict[str, Any]]:
                 {
                     "date": day_start.strftime("%Y-%m-%d"),
                     "label": day_start.strftime("%a"),
-                    "count": count if count > 0 else random.randint(500, 3000),
+                    "count": count,
                 }
             )
 
@@ -68,7 +67,7 @@ async def attack_trends(request: Request) -> list[dict[str, Any]]:
                 {
                     "date": day_start.strftime("%Y-%m-%d"),
                     "label": day_start.strftime("%a"),
-                    "count": count if count > 0 else random.randint(5, 50),
+                    "count": count,
                 }
             )
 

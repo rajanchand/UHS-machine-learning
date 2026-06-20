@@ -79,22 +79,6 @@ class AlertStatus(enum.Enum):
     RESOLVED = "resolved"
 
 
-class AttackType(enum.Enum):
-    """Supported attack classifications."""
-
-    DDOS = "DDoS"
-    DOS = "DoS"
-    PORT_SCAN = "Port Scan"
-    BRUTE_FORCE = "Brute Force"
-    BOTNET = "Botnet"
-    ARP_SPOOFING = "ARP Spoofing"
-    DNS_ATTACK = "DNS Attack"
-    ICMP_FLOOD = "ICMP Flood"
-    SSH_ATTACK = "SSH Attack"
-    FTP_ATTACK = "FTP Attack"
-    UNKNOWN = "Unknown"
-
-
 class ModelStatus(enum.Enum):
     """ML model status."""
 
@@ -102,33 +86,6 @@ class ModelStatus(enum.Enum):
     INACTIVE = "inactive"
     TRAINING = "training"
     FAILED = "failed"
-
-
-class ReportFormat(enum.Enum):
-    """Report export formats."""
-
-    PDF = "pdf"
-    EXCEL = "excel"
-    CSV = "csv"
-
-
-class ReportType(enum.Enum):
-    """Report period types."""
-
-    DAILY = "daily"
-    WEEKLY = "weekly"
-    MONTHLY = "monthly"
-    CUSTOM = "custom"
-
-
-class LogLevel(enum.Enum):
-    """System log severity levels."""
-
-    DEBUG = "debug"
-    INFO = "info"
-    WARNING = "warning"
-    ERROR = "error"
-    CRITICAL = "critical"
 
 
 class CaptureStatus(enum.Enum):

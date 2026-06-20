@@ -92,7 +92,7 @@ async def batch_predict(request: Request) -> dict[str, Any]:
     }
 
 
-@router.post("/train")
+@router.post("/train", response_model=None)
 async def train_model(request: Request, body: TrainRequest) -> Response | dict[str, Any]:
     """Train a new ML model."""
     session_factory = request.app.state.session_factory
@@ -174,7 +174,7 @@ async def train_model(request: Request, body: TrainRequest) -> Response | dict[s
     }
 
 
-@router.post("/retrain/{model_name}")
+@router.post("/retrain/{model_name}", response_model=None)
 async def retrain_model(request: Request, model_name: str) -> Response | dict[str, Any]:
     """Retrain an existing model."""
     return await train_model(request, TrainRequest(model_type=model_name))
@@ -248,7 +248,7 @@ async def list_models(request: Request) -> list[dict[str, Any]]:
         ]
 
 
-@router.put("/models/{model_name}/activate")
+@router.put("/models/{model_name}/activate", response_model=None)
 async def activate_model(request: Request, model_name: str) -> Response | dict[str, Any]:
     """Set a model as the active model."""
     session_factory = request.app.state.session_factory
@@ -271,7 +271,7 @@ async def activate_model(request: Request, model_name: str) -> Response | dict[s
     return {"message": f"Model {model_name} activated"}
 
 
-@router.get("/feature-importance/{model_name}")
+@router.get("/feature-importance/{model_name}", response_model=None)
 async def feature_importance(request: Request, model_name: str) -> Response | dict[str, Any]:
     """Get feature importance scores for a model."""
     session_factory = request.app.state.session_factory

@@ -87,7 +87,7 @@ async def update_settings(request: Request, body: SettingUpdateRequest) -> dict[
     return {"message": "Settings updated successfully"}
 
 
-@router.put("/password")
+@router.put("/password", response_model=None)
 async def change_password(request: Request, body: ChangePasswordRequest) -> Response | dict[str, Any]:
     """Change user password."""
     session_factory = request.app.state.session_factory

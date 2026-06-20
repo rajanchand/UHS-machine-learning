@@ -69,7 +69,7 @@ async def list_users(
         }
 
 
-@router.post("")
+@router.post("", response_model=None)
 async def create_user(request: Request, body: UserCreateRequest) -> Response | dict[str, Any]:
     """Create a new user."""
     session_factory = request.app.state.session_factory
@@ -118,7 +118,7 @@ async def create_user(request: Request, body: UserCreateRequest) -> Response | d
         }
 
 
-@router.put("/{user_id}")
+@router.put("/{user_id}", response_model=None)
 async def update_user(request: Request, user_id: str, body: UserUpdateRequest) -> Response | dict[str, Any]:
     """Update user details."""
     session_factory = request.app.state.session_factory
@@ -147,7 +147,7 @@ async def update_user(request: Request, user_id: str, body: UserUpdateRequest) -
     return {"message": "User updated successfully"}
 
 
-@router.delete("/{user_id}")
+@router.delete("/{user_id}", response_model=None)
 async def delete_user(request: Request, user_id: str) -> Response | dict[str, Any]:
     """Delete a user."""
     session_factory = request.app.state.session_factory
@@ -164,7 +164,7 @@ async def delete_user(request: Request, user_id: str) -> Response | dict[str, An
     return {"message": "User deleted successfully"}
 
 
-@router.patch("/{user_id}/role")
+@router.patch("/{user_id}/role", response_model=None)
 async def assign_role(request: Request, user_id: str, body: dict[str, Any]) -> Response | dict[str, Any]:
     """Assign a role to a user."""
     session_factory = request.app.state.session_factory
@@ -186,7 +186,7 @@ async def assign_role(request: Request, user_id: str, body: dict[str, Any]) -> R
     return {"message": f"Role updated to {role_value}"}
 
 
-@router.patch("/{user_id}/status")
+@router.patch("/{user_id}/status", response_model=None)
 async def toggle_status(request: Request, user_id: str, body: dict[str, Any]) -> Response | dict[str, Any]:
     """Activate or deactivate a user."""
     session_factory = request.app.state.session_factory

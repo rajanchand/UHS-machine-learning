@@ -18,7 +18,7 @@ from anomaly_detection.schemas.common import DatasetResponse
 router = APIRouter(prefix="/api/v1/datasets", tags=["datasets"])
 
 
-@router.post("/upload")
+@router.post("/upload", response_model=None)
 async def upload_dataset(
     request: Request,
     file: UploadFile = File(...),
@@ -99,7 +99,7 @@ async def list_datasets(request: Request) -> list[dict[str, Any]]:
         ]
 
 
-@router.get("/{dataset_id}")
+@router.get("/{dataset_id}", response_model=None)
 async def get_dataset(request: Request, dataset_id: str) -> Response | dict[str, Any]:
     """Get dataset details with preview."""
     session_factory = request.app.state.session_factory
@@ -151,7 +151,7 @@ async def download_dataset(request: Request, dataset_id: str) -> Response:
         )
 
 
-@router.delete("/{dataset_id}")
+@router.delete("/{dataset_id}", response_model=None)
 async def delete_dataset(request: Request, dataset_id: str) -> Response | dict[str, Any]:
     """Delete a dataset."""
     session_factory = request.app.state.session_factory

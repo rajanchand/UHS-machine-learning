@@ -145,7 +145,7 @@ async def download_report(request: Request, report_id: str) -> Response:
         )
 
 
-@router.delete("/{report_id}")
+@router.delete("/{report_id}", response_model=None)
 async def delete_report(request: Request, report_id: str) -> Response | dict[str, Any]:
     """Delete a report."""
     session_factory = request.app.state.session_factory

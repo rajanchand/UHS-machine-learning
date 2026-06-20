@@ -112,7 +112,7 @@ async def alert_counts(request: Request) -> dict[str, Any]:
         }
 
 
-@router.put("/{alert_id}")
+@router.put("/{alert_id}", response_model=None)
 async def update_alert(request: Request, alert_id: str, body: AlertUpdateRequest) -> Response | dict[str, Any]:
     """Update alert status or read state."""
     session_factory = request.app.state.session_factory

@@ -15,7 +15,7 @@ from anomaly_detection.schemas.common import UserResponse
 router = APIRouter(prefix="/api/v1/profile", tags=["profile"])
 
 
-@router.get("")
+@router.get("", response_model=None)
 async def get_profile(request: Request) -> Response | dict[str, Any]:
     """Get current user profile."""
     session_factory = request.app.state.session_factory
@@ -45,7 +45,7 @@ async def get_profile(request: Request) -> Response | dict[str, Any]:
         ).model_dump()
 
 
-@router.put("")
+@router.put("", response_model=None)
 async def update_profile(request: Request, body: dict[str, Any]) -> Response | dict[str, Any]:
     """Update user profile."""
     session_factory = request.app.state.session_factory
@@ -74,7 +74,7 @@ async def update_profile(request: Request, body: dict[str, Any]) -> Response | d
     return {"message": "Profile updated successfully"}
 
 
-@router.get("/activity")
+@router.get("/activity", response_model=None)
 async def user_activity(request: Request) -> Response | list[dict[str, Any]]:
     """Get user's recent activity log."""
     session_factory = request.app.state.session_factory

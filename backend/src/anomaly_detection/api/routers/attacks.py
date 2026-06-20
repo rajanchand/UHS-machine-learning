@@ -74,7 +74,7 @@ async def list_attacks(
         }
 
 
-@router.get("/{attack_id}")
+@router.get("/{attack_id}", response_model=None)
 async def get_attack(request: Request, attack_id: str) -> Response | dict[str, Any]:
     """Get attack details."""
     session_factory = request.app.state.session_factory
@@ -151,7 +151,7 @@ async def list_blocked_ips(request: Request) -> list[dict[str, Any]]:
         ]
 
 
-@router.delete("/blocked-ips/{ip_address}")
+@router.delete("/blocked-ips/{ip_address}", response_model=None)
 async def unblock_ip(request: Request, ip_address: str) -> Response | dict[str, Any]:
     """Remove an IP from the blocked list."""
     session_factory = request.app.state.session_factory

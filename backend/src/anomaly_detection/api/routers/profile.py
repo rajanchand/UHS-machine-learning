@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Any
+from uuid import UUID
 
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
@@ -83,10 +84,19 @@ async def user_activity(request: Request) -> Response | list[dict[str, Any]]:
     if not user_info:
         return JSONResponse(status_code=401, content={"detail": "Not authenticated"})
 
+    user_id_str = user_info.get("user_id")
+    if not user_id_str:
+        return JSONResponse(status_code=401, content={"detail": "Not authenticated"})
+
+    try:
+        user_uuid = UUID(user_id_str)
+    except ValueError:
+        return JSONResponse(status_code=400, content={"detail": "Invalid user ID format"})
+
     async with session_factory() as session:
         result = await session.execute(
             select(AuditLog)
-            .where(AuditLog.user_id == user_info.get("user_id"))
+            .where(AuditLog.user_id == user_uuid)
             .order_by(AuditLog.created_at.desc())
             .limit(20)
         )
